@@ -7,7 +7,8 @@ const buildDir = 'dist';
 const buildPath = Path.resolve(__dirname, buildDir);
 
 module.exports = {
-  entry: './assets/js/index.js',
+  mode: process.env.NODE_ENV,
+  entry: './app/js/index.jsx',
   output: {
     filename: 'js/bundle.js',
     path: buildPath,
@@ -16,22 +17,23 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js | jsx)$/,
-        exclude: /(node_modules | dist)/,
-        use: ['babel-loader'],
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules | dist)/,
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules|dist)/,
         use: ['babel-loader', 'eslint-loader'],
       },
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: 'index.html' }),
-    new Webpack.DefinePlugin({ 'process.env': Dotenv.parsed }),
+    new HtmlWebpackPlugin({
+      template: Path.resolve(__dirname, 'app/index.html'),
+      filename: 'index.html',
+      inject: 'body',
+    }),
+    new Webpack.DefinePlugin({ 'process.env': JSON.stringify(Dotenv.parsed) }),
   ],
-  mode: process.env.NODE_ENV,
+  resolve: {
+    extensions: ['.html', '.js', '.jsx'],
+  },
   devServer: {
     compress: true,
     contentBase: buildPath,

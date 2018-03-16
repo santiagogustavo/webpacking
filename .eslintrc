@@ -1,8 +1,11 @@
 {
+  "env": {
+    "browser": true
+  },
+  "extends": ["airbnb"],
   "parser": "babel-eslint",
   "plugins": ["react"],
   "rules": {
     "no-console": "off"
-  },
-  "extends": ["airbnb-base"]
+  }
 }
