@@ -1,5 +1,5 @@
 const greeter = () => {
-  console.log("Hello World!");
-}
+  console.log('Hello World!');
+};
 
-export default greeter
+export default greeter;
