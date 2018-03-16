@@ -8,9 +8,12 @@ const buildPath = Path.resolve(__dirname, buildDir);
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: './app/js/index.jsx',
+  entry: {
+    vendor: ['react', 'react-dom'],
+    app: './app/js/index.jsx',
+  },
   output: {
-    filename: 'js/bundle.js',
+    filename: 'js/[name].js',
     path: buildPath,
     publicPath: `/${buildDir}/`,
   },
@@ -23,6 +26,19 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          chunks: 'initial',
+          name: 'vendor',
+          test: 'vendor',
+          enforce: true,
+        },
+      },
+    },
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: Path.resolve(__dirname, 'app/index.html'),
@@ -34,6 +50,7 @@ module.exports = {
   resolve: {
     extensions: ['.html', '.js', '.jsx'],
   },
+  devtool: 'inline-source-map',
   devServer: {
     compress: true,
     contentBase: buildPath,
